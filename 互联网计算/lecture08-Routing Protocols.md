@@ -1,6 +1,49 @@
 Lecture 08-Routing Protocols(RIP and OSPF)
 ---
 
+<!-- TOC -->
+
+- [1. RIPv1/RIPv2](#1-ripv1ripv2)
+  - [1.1. RIP v1](#11-rip-v1)
+    - [1.1.1. RIP配置](#111-rip配置)
+  - [1.2. RIP v2](#12-rip-v2)
+  - [1.3. RIP v2的配置](#13-rip-v2的配置)
+    - [1.3.1. Verifying &Troubleshooting 验证与故障排除](#131-verifying-troubleshooting-验证与故障排除)
+    - [1.3.2. `debug IP RIP`命令](#132-debug-ip-rip命令)
+  - [1.4. RIP v1和RIP v2之间的区别](#14-rip-v1和rip-v2之间的区别)
+- [2. OSPF(single area) OSPF（单个区域）](#2-ospfsingle-area-ospf单个区域)
+  - [2.1. OSPF概述](#21-ospf概述)
+  - [2.2. 路由信息](#22-路由信息)
+  - [2.3. OSPF vs. RIP 差别](#23-ospf-vs-rip-差别)
+  - [2.4. OSPF 特征](#24-ospf-特征)
+  - [2.5. OSPF术语](#25-ospf术语)
+  - [2.6. OSPF 域(逻辑指称)](#26-ospf-域逻辑指称)
+  - [2.7. OSPF 行为](#27-ospf-行为)
+  - [2.8. 最短路径算法](#28-最短路径算法)
+  - [2.9. 选择DR和BDR](#29-选择dr和bdr)
+  - [2.10. DR & BDR](#210-dr--bdr)
+    - [2.10.1. 多路复用中的OSPF](#2101-多路复用中的ospf)
+  - [2.11. OSPF报文](#211-ospf报文)
+    - [2.11.1. OSPF Hello协议](#2111-ospf-hello协议)
+    - [2.11.2. OSPF报文头部](#2112-ospf报文头部)
+    - [2.11.3. 哪个路由器将成为DR？](#2113-哪个路由器将成为dr)
+  - [2.12. OSPF操作的完整步骤](#212-ospf操作的完整步骤)
+  - [2.13. Review: OSPF Operation](#213-review-ospf-operation)
+    - [2.13.1. 步骤1：建立路由器邻接](#2131-步骤1建立路由器邻接)
+    - [2.13.2. 步骤2：选举DR和BDR](#2132-步骤2选举dr和bdr)
+    - [2.13.3. 步骤3：发现路线](#2133-步骤3发现路线)
+    - [2.13.4. 步骤4：选择适当的路线](#2134-步骤4选择适当的路线)
+    - [2.13.5. 步骤5:维护路由信息](#2135-步骤5维护路由信息)
+    - [2.13.6. 链路状态变化出现](#2136-链路状态变化出现)
+  - [2.14. 基本的OSPF配置](#214-基本的ospf配置)
+  - [2.15. 配置回路(Loop)地址](#215-配置回路loop地址)
+  - [2.16. 修改OSPF接口优先级](#216-修改ospf接口优先级)
+  - [2.17. OSPF成本 = 指标](#217-ospf成本--指标)
+    - [2.17.1. OSPF路径COST](#2171-ospf路径cost)
+    - [2.17.2. 设置OSPF计时器](#2172-设置ospf计时器)
+
+<!-- /TOC -->
+
 # 1. RIPv1/RIPv2
 
 ## 1.1. RIP v1

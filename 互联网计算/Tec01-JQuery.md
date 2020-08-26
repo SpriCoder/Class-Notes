@@ -1,6 +1,24 @@
 JQuery
 ---
 
+<!-- TOC -->
+
+- [1. 简介](#1-简介)
+- [2. JQuery安装](#2-jquery安装)
+- [3. JQuery语法](#3-jquery语法)
+- [4. JQuery事件](#4-jquery事件)
+  - [4.1. $(document).ready()](#41-documentready)
+  - [4.2. click()](#42-click)
+  - [4.3. mousedown()](#43-mousedown)
+  - [4.4. mouseup()](#44-mouseup)
+  - [4.5. hover()](#45-hover)
+  - [4.6. focus()](#46-focus)
+  - [4.7. blur()](#47-blur)
+  - [4.8. 事件绑定](#48-事件绑定)
+  - [4.9. 解除事件绑定](#49-解除事件绑定)
+
+<!-- /TOC -->
+
 # 1. 简介
 1. 简化DOM操作，AJAX调用和Event处理
 2. 特点

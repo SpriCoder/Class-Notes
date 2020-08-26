@@ -5,6 +5,58 @@ Lecture06-应用层
    2. The Presentation Layer 展示层
    3. The Application Layer 应用层
 
+<!-- TOC -->
+
+- [1. 第五层：The Session Layer 会话层](#1-第五层the-session-layer-会话层)
+  - [1.1. 第五层的职责](#11-第五层的职责)
+  - [1.2. 第五层的服务](#12-第五层的服务)
+  - [1.3. 第五层设备](#13-第五层设备)
+- [2. Layer 6 - The Presentation Layer 第六层 表示层](#2-layer-6---the-presentation-layer-第六层-表示层)
+  - [2.1. 数据格式](#21-数据格式)
+    - [2.1.1. 图形文件格式](#211-图形文件格式)
+    - [2.1.2. 多媒体文件格式](#212-多媒体文件格式)
+  - [2.2. 数据加密与压缩](#22-数据加密与压缩)
+- [3. Layer 7:The Application Layer 应用层](#3-layer-7the-application-layer-应用层)
+  - [3.1. 应用层职责](#31-应用层职责)
+  - [3.2. 超文本传输协议 (HTTP，HyperText Transfer Protocol)](#32-超文本传输协议-httphypertext-transfer-protocol)
+    - [3.2.1. 统一资源定位符 URL(Uniform Resource Locator)](#321-统一资源定位符-urluniform-resource-locator)
+    - [3.2.2. HTTP](#322-http)
+    - [3.2.3. HTTP 的报文结构（请求报文）](#323-http-的报文结构请求报文)
+    - [3.2.4. HTTP 请求报文的一些方法](#324-http-请求报文的一些方法)
+  - [3.3. HTML(HyperText Markup Language)](#33-htmlhypertext-markup-language)
+  - [3.4. FTP(File Transfer Protocol) and TFTP(Trivial File Transfer Protocol)](#34-ftpfile-transfer-protocol-and-tftptrivial-file-transfer-protocol)
+    - [3.4.1. 主进程工作步骤](#341-主进程工作步骤)
+    - [3.4.2. FTP 的屏幕信息举例](#342-ftp-的屏幕信息举例)
+  - [3.5. Telnet 协议](#35-telnet-协议)
+  - [3.6. SMTP(Simple Mail Transfer Protocol) and POP(Post Office Protocol)](#36-smtpsimple-mail-transfer-protocol-and-poppost-office-protocol)
+    - [3.6.1. MIME(Multipurpose Internet Mail Extensions) 增加 5 个新的邮件首部](#361-mimemultipurpose-internet-mail-extensions-增加-5-个新的邮件首部)
+    - [3.6.2. MIME(Multipurpose Internet Mail Extensions) 和 SMTP 的关系](#362-mimemultipurpose-internet-mail-extensions-和-smtp-的关系)
+  - [3.7. SNMP(Simple Network Management Protocol) 简单网络管理协议](#37-snmpsimple-network-management-protocol-简单网络管理协议)
+  - [3.8. 域名系统（DNS, Domain Name System）](#38-域名系统dns-domain-name-system)
+    - [3.8.1. Domain Name 域名](#381-domain-name-域名)
+    - [3.8.2. TLD (Top Level Domain) TLD（顶级域）](#382-tld-top-level-domain-tld顶级域)
+    - [3.8.3. Domain Name Server 域名服务器](#383-domain-name-server-域名服务器)
+    - [3.8.4. 结合域名服务器查找IP地址](#384-结合域名服务器查找ip地址)
+  - [3.9. 应用层:沟通的方式](#39-应用层沟通的方式)
+  - [3.10. DHCP(Dynamic Host Configuration Protocol，动态主机配置协议)](#310-dhcpdynamic-host-configuration-protocol动态主机配置协议)
+    - [3.10.1. DHCP概述](#3101-dhcp概述)
+    - [3.10.2. DHCP过程](#3102-dhcp过程)
+      - [3.10.2.1. DHCP工作过程](#31021-dhcp工作过程)
+      - [3.10.2.2. 发现阶段](#31022-发现阶段)
+      - [3.10.2.3. 响应阶段](#31023-响应阶段)
+      - [3.10.2.4. 选择阶段](#31024-选择阶段)
+      - [3.10.2.5. 租约确认阶段](#31025-租约确认阶段)
+      - [3.10.2.6. 租期续约](#31026-租期续约)
+      - [3.10.2.7. 租期释放](#31027-租期释放)
+      - [3.10.2.8. DHCP报文结构](#31028-dhcp报文结构)
+    - [3.10.3. DHCP报文类型](#3103-dhcp报文类型)
+    - [3.10.4. DHCP欺骗及防范](#3104-dhcp欺骗及防范)
+      - [3.10.4.1. DHCP欺骗原理](#31041-dhcp欺骗原理)
+      - [3.10.4.2. DHCP欺骗攻击](#31042-dhcp欺骗攻击)
+      - [3.10.4.3. DHCP欺骗防范](#31043-dhcp欺骗防范)
+
+<!-- /TOC -->
+
 # 1. 第五层：The Session Layer 会话层
 1. TCP 控制传输，如果用户想要完成一定的数据控制，就会对应在会话层完成。
 

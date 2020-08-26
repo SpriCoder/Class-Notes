@@ -1,6 +1,38 @@
 Socket 编程
 ---
 
+<!-- TOC -->
+
+- [1. Socket简介](#1-socket简介)
+- [2. Socket分类](#2-socket分类)
+  - [2.1. 有连接的客户/服务器时序图](#21-有连接的客户服务器时序图)
+  - [2.2. 无连接的客户/服务器时序图](#22-无连接的客户服务器时序图)
+- [3. Socket常用函数](#3-socket常用函数)
+  - [3.1. socket()函数](#31-socket函数)
+  - [3.2. bind()函数](#32-bind函数)
+  - [3.3. listen()和connect()函数](#33-listen和connect函数)
+  - [3.4. accept()函数](#34-accept函数)
+  - [3.5. read()、write()等](#35-readwrite等)
+  - [3.6. close()操作](#36-close操作)
+- [4. Linux的阻塞和非阻塞IO](#4-linux的阻塞和非阻塞io)
+- [5. Java Socket API](#5-java-socket-api)
+  - [5.1. 示例](#51-示例)
+  - [5.2. TCP套接字](#52-tcp套接字)
+    - [5.2.1. ServerSocket类](#521-serversocket类)
+    - [5.2.2. Socket类](#522-socket类)
+  - [5.3. 套接字传输数据](#53-套接字传输数据)
+    - [5.3.1. 写入数据](#531-写入数据)
+    - [5.3.2. 写出数据](#532-写出数据)
+- [6. TCP套接字编程示例](#6-tcp套接字编程示例)
+  - [6.1. Java示例](#61-java示例)
+- [7. UDP](#7-udp)
+  - [7.1. DatagramSocket类](#71-datagramsocket类)
+  - [7.2. DatagramPacket类](#72-datagrampacket类)
+  - [7.3. UDP套接字编程示例](#73-udp套接字编程示例)
+  - [7.4. Java示例](#74-java示例)
+
+<!-- /TOC -->
+
 # 1. Socket简介
 ![](img/tec03/1.png)
 

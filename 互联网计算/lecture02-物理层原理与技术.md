@@ -1,6 +1,58 @@
 lecture02-物理层
 ---
 
+<!-- TOC -->
+
+- [1. 网络连接类型](#1-网络连接类型)
+- [2. 局域网介质](#2-局域网介质)
+  - [2.1. UTP (无屏蔽双绞线 Unshielded Twisted Pair)](#21-utp-无屏蔽双绞线-unshielded-twisted-pair)
+    - [2.1.1. 无屏蔽双绞线的优点](#211-无屏蔽双绞线的优点)
+    - [2.1.2. 无屏蔽双绞线的缺点](#212-无屏蔽双绞线的缺点)
+  - [2.2. 同轴电缆 Coaxial](#22-同轴电缆-coaxial)
+  - [2.3. 光缆 Fiber-Optic](#23-光缆-fiber-optic)
+    - [2.3.1. 光缆模式(Mode Type)](#231-光缆模式mode-type)
+  - [2.4. 无线通信 Wireless Communication](#24-无线通信-wireless-communication)
+  - [2.5. 无线传输手段 Wireless Transmission Methods](#25-无线传输手段-wireless-transmission-methods)
+- [3. UTP for Ethernet 以太网使用的双绞线](#3-utp-for-ethernet-以太网使用的双绞线)
+  - [3.1. 电缆规格和终端](#31-电缆规格和终端)
+  - [3.2. 无屏蔽双绞线的分类](#32-无屏蔽双绞线的分类)
+  - [3.3. 线的类型](#33-线的类型)
+    - [3.3.1. 直通线](#331-直通线)
+    - [3.3.2. 反转线](#332-反转线)
+    - [3.3.3. 交叉线](#333-交叉线)
+- [4. 介质和信号问题(物理层)](#4-介质和信号问题物理层)
+  - [4.1. 信令和通信问题](#41-信令和通信问题)
+  - [4.2. 冲突和冲突域 Collisions and Collision Domains](#42-冲突和冲突域-collisions-and-collision-domains)
+  - [4.3. 分割碰撞域 Segmenting Collision Domains](#43-分割碰撞域-segmenting-collision-domains)
+- [5. 数据通信的基础信息](#5-数据通信的基础信息)
+  - [5.1. 基本术语](#51-基本术语)
+  - [5.2. 理论基础:信号处理](#52-理论基础信号处理)
+  - [5.3. 数字信号通过实际的信道](#53-数字信号通过实际的信道)
+  - [5.4. 无噪声信道的最高传输速率](#54-无噪声信道的最高传输速率)
+  - [5.5. 噪声信道的最高传输速率](#55-噪声信道的最高传输速率)
+  - [5.6. 理论基础:波特率和比特率](#56-理论基础波特率和比特率)
+  - [5.7. 数据通信系统的模型](#57-数据通信系统的模型)
+  - [5.8. 数据通信技术：数字数据编码](#58-数据通信技术数字数据编码)
+  - [5.9. 将数字数据转换到模拟信号：调制](#59-将数字数据转换到模拟信号调制)
+  - [5.10. 将数字数据转换到数字信号：线路编码](#510-将数字数据转换到数字信号线路编码)
+  - [5.11. 数字通信技术:编码方式的分类](#511-数字通信技术编码方式的分类)
+    - [5.11.1. 单极性编码](#5111-单极性编码)
+    - [5.11.2. 极化编码：不归零制码(NRZ: Non-Return to Zero)](#5112-极化编码不归零制码nrz-non-return-to-zero)
+    - [5.11.3. 极化编码：归零制码（RZ: Return to Zero）](#5113-极化编码归零制码rz-return-to-zero)
+    - [5.11.4. 极化编码：曼彻斯特码（Manchester）](#5114-极化编码曼彻斯特码manchester)
+    - [5.11.5. 极化编码：差分曼彻斯特码（Differential Manchester）](#5115-极化编码差分曼彻斯特码differential-manchester)
+    - [5.11.6. 双极性编码：双极性传号交替反转码（AMI）](#5116-双极性编码双极性传号交替反转码ami)
+    - [5.11.7. 数据通信技术：多路复用](#5117-数据通信技术多路复用)
+  - [5.12. 多路复用的分类](#512-多路复用的分类)
+    - [5.12.1. 时分复用TDM (Time Division Multiplexing)](#5121-时分复用tdm-time-division-multiplexing)
+    - [5.12.2. 统计时分复用 STDM (Statistic TDM)](#5122-统计时分复用-stdm-statistic-tdm)
+    - [5.12.3. 频分复用 FDM (Frequency Division Multiplexing)](#5123-频分复用-fdm-frequency-division-multiplexing)
+    - [5.12.4. 波分复用 WDM (Wavelength Division Multiplexing)](#5124-波分复用-wdm-wavelength-division-multiplexing)
+    - [5.12.5. 码分复用 CDM (Code Division Multiplexing)](#5125-码分复用-cdm-code-division-multiplexing)
+- [6. 其他注释](#6-其他注释)
+
+<!-- /TOC -->
+
 # 1. 网络连接类型
 
 ![](img/lec02/1.png)
