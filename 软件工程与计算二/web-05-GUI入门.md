@@ -1,6 +1,30 @@
 05-GUI入门
 ---
 
+<!-- TOC -->
+
+- [1. GUI入门](#1-gui入门)
+  - [1.1. GUI Key elements](#11-gui-key-elements)
+    - [1.1.1. Component](#111-component)
+    - [1.1.2. Layout](#112-layout)
+    - [1.1.3. Event](#113-event)
+- [2. MVC Style](#2-mvc-style)
+  - [2.1. MVC in Swing](#21-mvc-in-swing)
+    - [2.1.1. Model](#211-model)
+    - [2.1.2. View](#212-view)
+    - [2.1.3. Controller](#213-controller)
+  - [2.2. MVC in Web GUI](#22-mvc-in-web-gui)
+    - [2.2.1. MVC vs MVP vs MVVM](#221-mvc-vs-mvp-vs-mvvm)
+    - [2.2.2. MVVM in Vue](#222-mvvm-in-vue)
+- [3. Virtual Dom 虚拟Dom树](#3-virtual-dom-虚拟dom树)
+  - [3.1. From Template to Dom in Vue](#31-from-template-to-dom-in-vue)
+  - [3.2. 为什么要虚拟Dom？](#32-为什么要虚拟dom)
+  - [3.3. diff 差异](#33-diff-差异)
+  - [3.4. patch](#34-patch)
+- [4. 参考](#4-参考)
+
+<!-- /TOC -->
+
 # 1. GUI入门
 
 ## 1.1. GUI Key elements
