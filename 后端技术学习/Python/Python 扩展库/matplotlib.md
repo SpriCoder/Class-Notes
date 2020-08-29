@@ -21,7 +21,8 @@
   - [2.6. 绘制堆叠图](#26-绘制堆叠图)
   - [2.7. 绘制箱线图](#27-绘制箱线图)
   - [2.8. 绘制直线图](#28-绘制直线图)
-  - [2.9. 集成库-pylab模块(包含Numpy和pyplot中的常用函数)](#29-集成库-pylab模块包含numpy和pyplot中的常用函数)
+  - [2.9. 绘制雷达图](#29-绘制雷达图)
+  - [2.10. 集成库-pylab模块(包含Numpy和pyplot中的常用函数)](#210-集成库-pylab模块包含numpy和pyplot中的常用函数)
 - [3. Matplotlib图像属性](#3-matplotlib图像属性)
   - [3.1. 色彩和样式](#31-色彩和样式)
   - [3.2. 文字](#32-文字)
@@ -41,7 +42,7 @@
 - [6. Seaborn](#6-seaborn)
   - [6.1. heatmap](#61-heatmap)
 - [7. matplotlib.pyploy(plt)的常见方法等介绍](#7-matplotlibpyployplt的常见方法等介绍)
-- [Matplotlib中的中文乱码解决](#matplotlib中的中文乱码解决)
+- [8. Matplotlib中的中文乱码解决](#8-matplotlib中的中文乱码解决)
 
 <!-- /TOC -->
 # 1. Matplotlib绘图基础
@@ -257,7 +258,40 @@ plt.rcParams['font.family'] = 'SimHei'
 ## 2.8. 绘制直线图
 1. 使用plot函数
 
-## 2.9. 集成库-pylab模块(包含Numpy和pyplot中的常用函数)
+## 2.9. 绘制雷达图
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+# 设置字体
+matplotlib.rcParams['font.family'] = 'SimHei'
+matplotlib.rcParams['font.sans-serif'] = ['SimHei']
+# 自定义标签
+lables = np.array(['综合','KDA','发育','推进','生存','输出'])
+# 设置雷达图维度数量
+nAttr = 6
+# 设置标签对应的值
+date = np.array([7, 5, 6, 9, 8, 7])
+# 获取到每一个对应的角度
+angles = np.linspace(0, 2*np.pi, nAttr, endpoint=False)
+# 拼接数据保证闭环
+date = np.concatenate((date, [date[0]]))
+angles = np.concatenate((angles, [angles[0]]))
+# 开始绘图
+fig = plt.figure(facecolor="white")
+plt.subplot(111, polar=True)
+plt.plot(angles, date, 'bo-', color = 'g', linewidth = 2)
+plt.fill(angles, date, facecolor = 'g', alpha = 0.25)
+plt.thetagrids(angles*180/np.pi, lables)
+plt.figtext(0.52, 0.95, 'DOTA能力值雷达图', ha='center')
+plt.grid(True)
+plt.savefig('dota_radar.JPG')
+plt.show()
+```
+
+><a href = "https://www.cnblogs.com/walkwaters/p/12094284.html">雷达图绘制</a>
+
+## 2.10. 集成库-pylab模块(包含Numpy和pyplot中的常用函数)
 1. 导入模块:`import pylab as pl`
 
 # 3. Matplotlib图像属性
@@ -426,5 +460,5 @@ title(str)|添加表的名称|-
 xlabel(str)|添加x轴的名称|-
 ylabel(str)|添加y轴的名称|-
 
-# Matplotlib中的中文乱码解决
+# 8. Matplotlib中的中文乱码解决
 1. 我们可以在绘制图片的时候显式的指定字体。

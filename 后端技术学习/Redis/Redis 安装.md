@@ -11,6 +11,8 @@ Redis 安装
   - [2.3. 启动redis服务器](#23-启动redis服务器)
   - [2.4. 部分报错的解决方案](#24-部分报错的解决方案)
   - [2.5. 参考](#25-参考)
+- [3. Docker安装Redis](#3-docker安装redis)
+  - [3.1. 修改Redis的密码](#31-修改redis的密码)
 
 <!-- /TOC -->
 
@@ -85,3 +87,16 @@ service redis restart
 
 ## 2.5. 参考
 1. <a href = "https://www.cnblogs.com/wmqiang/p/10570326.html">Linux服务器安装部署redis</a>
+
+# 3. Docker安装Redis
+1. 搜索镜像:`docker search redis`
+2. 拉取镜像:`docker pull redis`
+3. 创建docker容器并设置密码:`docker run --name redis -p 6379:6379 redis-test --requirepass 123456`
+
+## 3.1. 修改Redis的密码
+1. 查看redis服务的容器ID:`docker ps -a`，找到容器ID
+2. 进入redis容器:`docker exec -it 容器ID bash`
+3. 进入redis配置目录:`cd /usr/local/bin`
+4. 运行命令:`redis-cli`
+5. 查看现有的redis密码:`config get requirepass`
+6. 设置redis密码:`config set requirepass new_password`

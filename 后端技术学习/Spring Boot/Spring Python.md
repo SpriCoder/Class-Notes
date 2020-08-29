@@ -4,6 +4,92 @@ Spring Python
 
 # 1. 选择JPython
 1. 是一种方法，但是当调用比较复杂的时候会有一定的问题
+2. <a href = "https://www.jianshu.com/p/cefdaccd3fd3">jpython的使用(Java调用python脚本)</a>
+
+## 1.1. pom配置
+```xml
+<dependency>
+    <groupId>org.python</groupId>
+    <artifactId>jython-standalone</artifactId>
+    <version>2.7.0</version>
+</dependency>
+```
+
+## 1.2. 直接执行Python
+```java
+import org.python.util.PythonInterpreter;
+public class FirstJavaScript {
+    public static void main(String args[]) {
+        //环境配置部分
+        Properties props = new Properties();
+        props.put("python.home", "path to the Lib folder");
+        props.put("python.console.encoding", "UTF-8");
+        props.put("python.security.respectJavaAccessibility", "false");
+        props.put("python.import.site", "false");
+        Properties preprops = System.getProperties();
+        PythonInterpreter.initialize(preprops, props, new String[0]);
+
+        //执行部分
+        PythonInterpreter interpreter = new PythonInterpreter();
+        interpreter.exec("days=('mod','Tue','Wed','Thu','Fri','Sat','Sun'); ");
+        interpreter.exec("print days[1];");
+    }// main
+}
+```
+
+## 1.3. 执行Python文件中的方法
+1. Python文件
+
+```py
+# test.py
+def add(a, b):
+    return a + b
+```
+
+2. 执行Python文件中的方法:
+```java
+Properties props = new Properties();
+props.put("python.home", "path to the Lib folder");
+props.put("python.console.encoding", "UTF-8");
+props.put("python.security.respectJavaAccessibility", "false");
+props.put("python.import.site", "false");
+Properties preprops = System.getProperties();
+PythonInterpreter.initialize(preprops, props, new String[0]);
+
+PythonInterpreter interpreter = new PythonInterpreter();
+interpreter.execfile("test.py");
+PyFunction func = (PyFunction) interpreter.get("add",
+    PyFunction.class);
+int a = 100, b = 100;
+PyObject pyobj = func.__call__(new PyInteger(a), new PyInteger(b));
+System.out.println("anwser = " + pyobj.toString());
+```
+
+## 1.4. 执行Python文件中的主方法
+1. Python文件
+
+```py
+# -*- coding: utf-8 -*
+# test.py
+print ("hello")
+ls = [1,2,3,4,5,6]
+print(ls)
+print('你好')
+```
+
+2. 使用Java调用Python执行主方法
+```java
+Properties props = new Properties();
+props.put("python.home", "path to the Lib folder");
+props.put("python.console.encoding", "UTF-8");
+props.put("python.security.respectJavaAccessibility", "false");
+props.put("python.import.site", "false");
+Properties preprops = System.getProperties();
+PythonInterpreter.initialize(preprops, props, new String[0]);
+
+PythonInterpreter interpreter = new PythonInterpreter();
+interpreter.execfile("test.py");
+```
 
 # 2. 选择发起网络请求
 1. 就是通过改写你的Python端，使其运行在例如Flask的框架下，发起请求即可。
