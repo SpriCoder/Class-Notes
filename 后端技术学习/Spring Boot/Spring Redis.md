@@ -11,11 +11,10 @@ Spring Redis
   - [2.2. String(字符串)实例](#22-string字符串实例)
   - [2.3. List实例](#23-list实例)
   - [2.4. Java Keys实例](#24-java-keys实例)
-- [3. Spring集合redis](#3-spring集合redis)
+- [3. Spring Boot 合并 redis](#3-spring-boot-合并-redis)
   - [3.1. config文件](#31-config文件)
-  - [3.2. Service和ServiceImpl](#32-service和serviceimpl)
-  - [3.3. 存放的序列化对象](#33-存放的序列化对象)
-  - [3.4. 参考](#34-参考)
+  - [3.2. 实现Redis的Service](#32-实现redis的service)
+  - [3.3. 参考](#33-参考)
 
 <!-- /TOC -->
 
@@ -136,7 +135,7 @@ public class RedisKeyJava {
 }
 ```
 
-# 3. Spring集合redis
+# 3. Spring Boot 合并 redis
 
 ## 3.1. config文件
 ```java
@@ -158,82 +157,53 @@ public class RedisConfig extends CachingConfigurerSupport {
 }
 ```
 
-## 3.2. Service和ServiceImpl
+## 3.2. 实现Redis的Service
 ```java
-public interface RedisService {
-    public void set(String key, Object value);  
-    public Object get(String key);  
-}
-//ServiceImpl
 @Service
-public class RedisServiceImpl implements RedisService {
+public class RedisService {
     @Resource
     private RedisTemplate<String,Object> redisTemplate;
+
+    private volatile static ValueOperations<String,Object> vo;
+
+    private void initRedis(){
+        if(vo == null)
+        {
+            synchronized (RedisService.class)
+            {
+                if(vo == null)
+                {
+                    vo = redisTemplate.opsForValue();
+                }
+            }
+        }
+    }
+
     public void set(String key, Object value) {
-        ValueOperations<String,Object> vo = redisTemplate.opsForValue();
+        initRedis();
         vo.set(key, value);
     }
-    public Object get(String key) {
-        ValueOperations<String,Object> vo = redisTemplate.opsForValue();
-        return vo.get(key);
+
+    public String get(String key) {
+        initRedis();
+        return (String)vo.get(key);
+    }
+
+    /**
+     * 放置有时效性的键
+     * @param key
+     * @param value
+     * @param seconds 秒
+     */
+    public void setTime(String key, Object value, long seconds){
+        initRedis();
+        Duration duration = Duration.between(LocalDateTime.now(),
+                LocalDateTime.now().plusSeconds(seconds));
+        vo.set(key, value, duration);
     }
 }
+
 ```
 
-## 3.3. 存放的序列化对象
-```java
-@Entity
-@Table(name="s_user")
-public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id 
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
-    private String username;
-    private String password;
-    private String dictum;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType. LAZY, cascade = {CascadeType. ALL})
-    private Set<Photo> setPhoto;
-
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public String getDictum() {
-        return dictum;
-    }
-    public void setDictum(String dictum) {
-        this.dictum = dictum;
-    }
-    public Set<Photo> getSetPhoto() {
-        return setPhoto;
-    }
-    public void setSetPhoto(Set<Photo> setPhoto) {
-        this.setPhoto = setPhoto;
-    }
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", username=" + username + ", password="
-                + password + ", dictum=" + dictum + ", setPhoto=" + setPhoto
-                + "]";
-    }
-}
-```
-
-## 3.4. 参考
+## 3.3. 参考
 1. <a href = "https://blog.csdn.net/change_on/article/details/62059833?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task">SpringBoot 整合 Redis 的简单案例</a>

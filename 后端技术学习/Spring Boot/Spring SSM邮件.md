@@ -53,7 +53,7 @@ public class MailUtil {
     private static JavaMailSender javaMailSender;
     private static String host = "smtp.qq.com";
     private static String emailFrom;
-    private static Integer SMTPPort = 25;
+    private static Integer SMTPPort = 465;//SSL
     private static String coding = "utf-8";
     private static String password;
 
@@ -63,7 +63,7 @@ public class MailUtil {
                 if(javaMailSender == null){
                     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
                     //外部加载数据
-                    FileReader fileReader = new FileReader("./pass/mailInfo.txt");
+                    FileReader fileReader = new FileReader("filename");
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
                     emailFrom = bufferedReader.readLine();
                     password = bufferedReader.readLine();
@@ -73,7 +73,7 @@ public class MailUtil {
                     mailSender.setUsername(emailFrom);//用户名
                     mailSender.setPassword(password);//就是刚刚设置的授权码
 
-                    //加认证机制，服务器会封禁25端口
+                    //加认证机制
                     Properties javaMailProperties = new Properties();
                     javaMailProperties.put("mail.smtp.auth", true);
                     javaMailProperties.put("mail.smtp.starttls.enable", true);
@@ -82,6 +82,7 @@ public class MailUtil {
                     javaMailProperties.put("mail.smtp.ssl.enable",true);
                     javaMailProperties.put("mail.smtp.socketFactory.class",javax.net.ssl.SSLSocketFactory.class);
 
+                    mailSender.setDefaultEncoding(coding);
                     mailSender.setJavaMailProperties(javaMailProperties);
 
                     javaMailSender = mailSender;
@@ -96,10 +97,12 @@ public class MailUtil {
         MimeMessageHelper helper = new MimeMessageHelper(message,true);
         helper.setFrom(emailFrom);//发件人
         helper.setTo(toEmail);//收件人
-        helper.setSubject("【MIAO】 验证码");//主题
-        helper.setText("尊敬的用户：\n    您好！\n    欢迎您加入MIAO大家庭，您的验证码是 " + code +
-                "。此验证码5分钟内有效。\n                                                         " +
-                "MIAO 敬上", false);
+        helper.setSubject("主题");//主题
+
+        //不使用HTML
+        helper.setText("内容", false);
+        //使用HTML
+        helper.setText("HTML", true);
 
         //发送邮件
         javaMailSender.send(message);

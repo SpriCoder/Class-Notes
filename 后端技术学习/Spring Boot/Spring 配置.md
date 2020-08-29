@@ -12,9 +12,12 @@ spring配置
 - [5. 文件外部配置](#5-文件外部配置)
   - [5.1. 禁用命令行修改配置](#51-禁用命令行修改配置)
 - [6. Spring的配置入口](#6-spring的配置入口)
-- [多环境配置](#多环境配置)
-- [常见的配置属性(大全)](#常见的配置属性大全)
-- [7. 参考](#7-参考)
+- [7. 多环境配置](#7-多环境配置)
+- [8. 配置文件](#8-配置文件)
+  - [8.1. yml](#81-yml)
+  - [8.2. properties](#82-properties)
+- [9. 常见的配置属性(大全)](#9-常见的配置属性大全)
+- [10. 参考](#10-参考)
 
 <!-- /TOC -->
 
@@ -93,7 +96,7 @@ user.age = ${random.int}
 15. 默认属性(通过SpringApplication.setDefaultProperties指定).
 16. 以上按照优先级，高优先级配置覆盖低优先级设备
 
-# 多环境配置
+# 7. 多环境配置
 1. 当应用程序需要部署到不同运行环境时，一些配置细节通常会有所不同，最简单的比如日志，生产日志会将日志级别设置为WARN或更高级别，并将日志写入日志文件，而开发的时候需要日志级别为DEBUG，日志输出到控制台即可。 如果按照以前的做法，就是每次发布的时候替换掉配置文件，这样太麻烦了，Spring Boot的Profile就给我们提供了解决方案，命令带上参数就搞定。
 2. 这里我们来模拟一下，只是简单的修改端口来测试 在Spring Boot中多环境配置文件名需要满足`application-{profile}.properties`的格式，其中`{profile}`对应你的环境标识，比如：
    1. application-dev.properties：开发环境
@@ -143,7 +146,20 @@ public class TaskController {
 ```
 5. `spring.profiles.include`可以用来叠加profile
 
-# 常见的配置属性(大全)
+# 8. 配置文件
+1. Spring Boot提供了两种常用的配置文件，配置文件为application.properties文件和application.yml文件，都是用来修改Spring Boot自动配置的默认值的。
+
+## 8.1. yml
+1. YAML以**空格的缩进程度**来控制层级关系，只要左边空格对齐则视为同一个层级**(不能用tab代替空格，大小写敏感**)。YAML支持字面值，对象，数组三种数据结构，也支持复合结构。
+    + 字面值：字符串，布尔类型，数值，日期。字符串默认不加引号，单引号会转义特殊字符。日期格式支持yyyy/MM/dd HH:mm:ss
+    + 对象：由键值对组成，形如 key:(空格)value(**空格必须要有**)，每组键值对占用一行，且缩进的程度要一致。也可以使用行内写法：{k1: v1, ....kn: vn}
+    + 数组：由形如 -(空格)value 的数据组成(**空格必须要有**)，每组数据占用一行，且缩进的程度要一致。也可以使用行内写法： [1,2,...n]
+    + 复合结构：上面三种数据结构任意组合
+
+## 8.2. properties
+1. 语法结构形如:key = value
+
+# 9. 常见的配置属性(大全)
 ```
 # ===================================================================
 # COMMON SPRING BOOT PROPERTIES
@@ -1331,5 +1347,5 @@ spring.test.database.replace=any # Type of existing DataSource to replace.
 spring.test.mockmvc.print=default # MVC Print option.
 ```
 
-# 7. 参考
+# 10. 参考
 1. <a href = "https://blog.csdn.net/kevin2562/article/details/82691147">application.properties 切换到 application.yml</a>
