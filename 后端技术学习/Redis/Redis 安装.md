@@ -13,6 +13,7 @@ Redis 安装
   - [2.5. 参考](#25-参考)
 - [3. Docker安装Redis](#3-docker安装redis)
   - [3.1. 修改Redis的密码](#31-修改redis的密码)
+  - [3.2. 通过替换redis.conf来配置](#32-通过替换redisconf来配置)
 
 <!-- /TOC -->
 
@@ -100,3 +101,17 @@ service redis restart
 4. 运行命令:`redis-cli`
 5. 查看现有的redis密码:`config get requirepass`
 6. 设置redis密码:`config set requirepass new_password`
+
+## 3.2. 通过替换redis.conf来配置
+1. 在编写dockerfile的时候替换配置文件
+
+```sh
+docker run -p 6379:6379 -v /usr/local/redis/conf/redis.conf:/etc/redis/redis.conf -v /usr/local/redis/data:/data --name byteblogs-redis -d redis:5.0 redis-server /etc/redis/redis.conf
+```
+
+2. 解释
+```
+-p 6379:6379 : 将容器的6379端口映射到主机的6379端口
+-v /usr/local/redis/conf/redis.conf:/etc/redis/redis.conf :将主机/usr/local/redis/conf目录下redis.conf挂在到容器/etc/redis/redis.conf
+-v /usr/local/redis/data:/data  : 将主机 /usr/local/redis/data目录下的data挂载到容器的/data
+```
