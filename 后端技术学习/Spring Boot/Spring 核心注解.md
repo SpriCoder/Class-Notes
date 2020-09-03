@@ -2,7 +2,6 @@
 
 - [1. 核心注解](#1-核心注解)
 - [2. 功能标签](#2-功能标签)
-  - [2.1. 参考](#21-参考)
 - [3. @Pointcut高级用法](#3-pointcut高级用法)
   - [3.1. 切点命名](#31-切点命名)
   - [3.2. 更多](#32-更多)
@@ -48,7 +47,30 @@
   - [14.1. 源码](#141-源码)
   - [14.2. 描述](#142-描述)
 - [15. @ResponseBody 和 @ResponseStatus](#15-responsebody-和-responsestatus)
-- [16. 参考](#16-参考)
+- [16. @ConfigurationProperties](#16-configurationproperties)
+  - [16.1. 本地进行邮件发送模块测试](#161-本地进行邮件发送模块测试)
+    - [16.1.1. 解决方法一:使用配置文件配置参数开关](#1611-解决方法一使用配置文件配置参数开关)
+    - [16.1.2. 解决方法二:使用更安全的`@ConfigurationProperties`注解](#1612-解决方法二使用更安全的configurationproperties注解)
+  - [16.2. 属性无法转换问题](#162-属性无法转换问题)
+  - [16.3. 未知属性问题](#163-未知属性问题)
+  - [16.4. 启动时校验属性](#164-启动时校验属性)
+  - [16.5. 复杂类型的属性](#165-复杂类型的属性)
+    - [16.5.1. List类型](#1651-list类型)
+    - [16.5.2. Duration类型](#1652-duration类型)
+    - [16.5.3. DataSize类型](#1653-datasize类型)
+    - [16.5.4. 自定义类型](#1654-自定义类型)
+  - [16.6. 自动补全:Spring Boot Configuration Processor](#166-自动补全spring-boot-configuration-processor)
+- [17. @Value注解](#17-value注解)
+  - [17.1. 注入普通字符串](#171-注入普通字符串)
+  - [17.2. 注入操作系统属性](#172-注入操作系统属性)
+  - [17.3. 注入表达式结果](#173-注入表达式结果)
+  - [17.4. 注入其他Bean属性：](#174-注入其他bean属性)
+  - [17.5. 注入文件资源](#175-注入文件资源)
+  - [17.6. 注入URL资源](#176-注入url资源)
+  - [17.7. 注入配置文件的属性](#177-注入配置文件的属性)
+    - [17.7.1. 配置文件分类](#1771-配置文件分类)
+    - [17.7.2. 读取配置文件实例](#1772-读取配置文件实例)
+- [18. 参考](#18-参考)
 
 <!-- /TOC -->
 # 1. 核心注解
@@ -70,20 +92,17 @@ public class DemoApplication(){
 
 # 2. 功能标签
 
-标签名|含义
---|--
-`@Service`|用于标注业务层组件，service层或者manager层
-`@Controller`|用于标注控制层组件，action层
-`@Repository`|用于标注数据访问组件，即DAO组件
-`@Component`|用于泛指组件，不好归类时，我们选择这种组件
+| 标签名        | 含义                                       |
+| ------------- | ------------------------------------------ |
+| `@Service`    | 用于标注业务层组件，service层或者manager层 |
+| `@Controller` | 用于标注控制层组件，action层               |
+| `@Repository` | 用于标注数据访问组件，即DAO组件            |
+| `@Component`  | 用于泛指组件，不好归类时，我们选择这种组件 |
 
 1. 这个标签主要使用于标记这个接口的使用
 2. 通过写参数来放置不同组件之间的冲突
 3. **必须按照要求标记标签，便于注入框架**
 4. **从前端接受的数据必须标记@ResponseBody**
-
-## 2.1. 参考
-1. <a href = "https://blog.csdn.net/qq_26125865/article/details/82881481">四种元注释</a>
 
 # 3. @Pointcut高级用法
 
@@ -565,15 +584,15 @@ class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 public class EmployeeService
 ```
 
-属性名|说明
---|--
-name|当在配置文件中有多个 TransactionManager , 可以用该属性指定选择哪个事务管理器。
-propagation|事务的传播行为，默认值为 REQUIRED。
-isolation|事务的隔离度，默认值采用 DEFAULT。
-timeout|事务的超时时间，默认值为-1。如果超过该时间限制但事务还没有完成，则自动回滚事务。
-read-only|指定事务是否为只读事务，默认值为 false；为了忽略那些不需要事务的方法，比如读取数据，可以设置 read-only 为 true。
-rollback-for|用于指定能够触发事务回滚的异常类型，如果有多个异常类型需要指定，各类型之间可以通过逗号分隔。
-no-rollback- for|抛出 no-rollback-for 指定的异常类型，不回滚事务。
+| 属性名           | 说明                                                                                                             |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------- |
+| name             | 当在配置文件中有多个 TransactionManager , 可以用该属性指定选择哪个事务管理器。                                   |
+| propagation      | 事务的传播行为，默认值为 REQUIRED。                                                                              |
+| isolation        | 事务的隔离度，默认值采用 DEFAULT。                                                                               |
+| timeout          | 事务的超时时间，默认值为-1。如果超过该时间限制但事务还没有完成，则自动回滚事务。                                 |
+| read-only        | 指定事务是否为只读事务，默认值为 false；为了忽略那些不需要事务的方法，比如读取数据，可以设置 read-only 为 true。 |
+| rollback-for     | 用于指定能够触发事务回滚的异常类型，如果有多个异常类型需要指定，各类型之间可以通过逗号分隔。                     |
+| no-rollback- for | 抛出 no-rollback-for 指定的异常类型，不回滚事务。                                                                |
 
 ## 10.2. Spring的注解方式的事务实现机制
 1. Spring Framework默认使用AOP代理，根据@Transaction的属性配置信息，决定是否由拦截器TransactionInterceptor来使用拦截
@@ -734,12 +753,380 @@ public class ProfileDatabaseConfig {
 1. @ResponseBody：典型spring mvc应用，请求点通常返回html页面。有时我们仅需要实际数据，如使用ajax请求。这时我们能通过@ResponseBody注解标记请求处理方法，审批人能够处理方法结果值作为http响应体。
 2. @ResponseStatus:当请求点成功返回，spring提供http 200(ok)相应。如果请求点抛出异常，spring查找异常处理器，由其返回相应的http状态码。对这些方法增加@ResponseStatus注解，spring会返回自定义http状态码。
 
-# 16. 参考
+# 16. @ConfigurationProperties
+1. 在编写项目代码时，我们要求更灵活的配置，更好的模块化整合。在 Spring Boot 项目中，为满足以上要求，我们将大量的参数配置在`application.properties`或`application.yml`文件中，通过`@ConfigurationProperties`注解，我们可以方便的获取这些参数值
+
+## 16.1. 本地进行邮件发送模块测试
+1. 我们不想要使用本地进行邮件发送测试
+
+### 16.1.1. 解决方法一:使用配置文件配置参数开关
+1. 配置参数开关，设计实现默认主题
+```yml
+myapp:
+    mail:
+        enabled: true
+        default-subject: "This is a Test"
+```
+2. 之后我们可以使用`@Value`注解来访问这些属性，但是这个相对比较笨重。
+
+### 16.1.2. 解决方法二:使用更安全的`@ConfigurationProperties`注解
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "myapp.mail")
+public class mailModuleProperties{
+    private Boolean enabled = Boolean.TRUE;
+    private String defaultSubject;
+}
+```
+1. 注意类的属性名称必须和外部属性的名称匹配
+2. 我们可以简单进行默认初始化
+3. 类本身可以是包私有的
+4. 类的字段必须有公共的setter方法
+5. 通过`@Component`注解进行Bean注册
+6. 另一种注册方式，使用Spring的Java Configuration的特性注册
+```java
+//代码形式注册
+@Configuration
+class PropertiesConfig{
+    @Bean
+    public MailModuleProperties mailModuleProperties(){
+        return new MailModuleProperties();
+    }
+}
+//注解形式注册，不建议
+@Configuration
+@EnableConfigurationProperties(MailModuleProperties.class)
+class PropertiesConfig{
+
+}
+```
+
+## 16.2. 属性无法转换问题
+1. 当属性不匹配的时候，运行时，Spring Boot会抛出异常
+2. 不希望启动失败:使用`ignoreInvalidFields`字段，这时候如果没有的话，则会初始化对应属性为NULL
+
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "myapp.mail", ignoreInvalidFields = true)
+public class mailModuleProperties{
+    private Boolean enabled = Boolean.TRUE;
+    private String defaultSubject;
+}
+```
+
+## 16.3. 未知属性问题
+1. 如果我们在配置文件中多提供了一个没有注册的属性会怎样？配置文件如下:
+
+```yml
+myapp:
+    mail:
+        enabled: true
+        default: "This is a Test"
+        unkown-property: "foo"
+```
+
+>Spring Boot默认会忽略没有绑定的属性，也不会运行报错,如果想要报错则使用`ignoreUnknownFields`字段即可
+
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "myapp.mail", ignoreUnknownFields = false)
+public class mailModuleProperties{
+    private Boolean enabled = Boolean.TRUE;
+    private String defaultSubject;
+}
+```
+
+>如上操作就会正常报错
+
+## 16.4. 启动时校验属性
+```java
+@Data
+@Validated
+@Component
+@ConfigurationProperties(prefix = "myapp.mail")
+public class mailModuleProperties{
+    @NotNull
+    private Boolean enabled = Boolean.TRUE;
+    @NotEmpty
+    private String defaultSubject;
+}
+```
+>在启动的时候，则会按照标签进行检查，如果不符合则会报`BindValidationException`异常
+
+## 16.5. 复杂类型的属性
+
+### 16.5.1. List类型
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "myapp.mail")
+public class mailModuleProperties{
+    private List<String> smtpServers;
+}
+```
+
+1. application.properties方式填充
+```yml
+myapp.mail.smtpServers[0]=server1
+myapp.mail.smtpServers[1]=server2
+```
+
+2. 使用yml的方式进行填充
+```yml
+myapp:
+    mail:
+        smtp-servers:
+            - server1
+            - server2
+```
+
+### 16.5.2. Duration类型
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "myapp.mail")
+public class mailModuleProperties{
+    // 这个注释是用来声明单位的
+    @DurationUnit(ChronoUnit.SECONDS)
+    private Duration pauseBetweenMails;
+}
+```
+>默认单位毫秒
+
+1. application.properties方式填充
+```yml
+myapp.mail.pause-between-mails=5s
+```
+
+2. 使用yml的方式进行填充
+```yml
+myapp:
+    mail:
+        pause-between-mails: 5s
+```
+
+| 单位 | 英文         | 中文 |
+| ---- | ------------ | ---- |
+| ns   | nanoseconds  | 纳秒 |
+| us   | microseconds | 微秒 |
+| ms   | milliseconds | 毫秒 |
+| s    | seconds      | 秒   |
+| m    | minutes      | 分   |
+| h    | hours        | 时   |
+| d    | days         | 天   |
+
+### 16.5.3. DataSize类型
+1. 类似Duration，默认单位byte(字节)
+
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "myapp.mail")
+public class mailModuleProperties{
+    // 这个注释是用来声明单位的
+    @DataSizeUnit(DataUnit.MEGABYTES)
+    private DataSize maxAttachmentSize = DataSize.ofMegabytes(2);
+}
+```
+>默认单位毫秒
+
+1. application.properties方式填充
+```yml
+myapp.mail.max-attachment-size=1MB
+```
+
+2. 使用yml的方式进行填充
+```yml
+myapp:
+    mail:
+        max-attachment-size: 1MB
+```
+
+| 单位 | 英文      |
+| ---- | --------- |
+| B    | bytes     |
+| KB   | kilobytes |
+| MB   | megabytes |
+| GB   | gigabytes |
+| TB   | terabytes |
+
+### 16.5.4. 自定义类型
+1. 我们想要配置自己定义的类型
+2. 比如配置文件如下
+```yml
+myapp:
+    mail:
+        max-attachment-weight: 5kg
+```
+3. 添加Weight属性
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "myapp.mail")
+public class mailModuleProperties{
+    private Weight maxAttachmentWeight;
+}
+```
+4. 创建自己的转换器
+```java
+class WeightConverter implements Converter<String, Weight> {
+
+    @Override
+    public Weight convert(String source){
+        //从字符串转换成Weight对象
+    }
+}
+```
+5. 绑定到Spring上下文
+```java
+@Configuration
+class PropertiesConfig{
+    @Bean
+    @ConfigurationPropertiesBinding //注册该转换器为数据绑定
+    public WeightConverter weightConverter(){
+        return new WeightConverter();
+    }
+}
+```
+
+## 16.6. 自动补全:Spring Boot Configuration Processor
+1. Maven依赖
+```xml
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-configuration-processor</artifactId>
+    <optional>true</optional>
+</dependency>
+```
+2. 之后重新build后，在/target/classed/META-INF中可以找到一个JSON文件，提供自动提示
+
+# 17. @Value注解
+1. @Value是不通过配置文件注入属性的一种方式
+2. 可以注入如下部分
+
+## 17.1. 注入普通字符串
+```java
+// 注入普通字符串
+@Value("normal")
+private String normal;
+```
+
+## 17.2. 注入操作系统属性
+```java
+// 注入操作系统属性
+@Value("#{systemProperties['os.name']}")
+private String systemPropertiesName;
+```
+
+## 17.3. 注入表达式结果
+```java
+//注入表达式结果
+@Value("#{ T(java.lang.Math).random() * 100.0 }")
+private double randomNumber;
+```
+
+## 17.4. 注入其他Bean属性：
+1. 注入beanInject对象的属性another
+```java
+// 注入其他Bean属性：注入beanInject对象的属性another，类具体定义见下面
+@Value("#{beanInject.another}")
+private String fromAnotherBean;
+```
+2. BeanInject类
+```java
+//beanInject类
+@Component
+public class BeanInject {
+    @Value("其他Bean的属性")
+    private String another;
+
+    public String getAnother() {
+        return another;
+    }
+
+    public void setAnother(String another) {
+        this.another = another;
+    }
+}
+```
+
+## 17.5. 注入文件资源
+```java
+// 注入文件资源
+@Value("classpath:com/hry/spring/configinject/config.txt")
+private Resource resourceFile; 
+```
+
+## 17.6. 注入URL资源
+```java
+// 注入URL资源
+@Value("http://www.baidu.com")
+private Resource testUrl;
+```
+
+## 17.7. 注入配置文件的属性
+
+### 17.7.1. 配置文件分类
+1. 默认配置文件:`application.properties`或`application.yml`文件
+2. 自定义配置文件:需要通过`@PropertySource`加载
+   - 如果有多个配置文件，第一个属性文件和第二个属性文件存在相同Key，则最后一个属性文件的key启作用
+   - 配置文件的路径也可以从变量中加载，如下面的例子
+
+### 17.7.2. 读取配置文件实例
+1. 第一个配置文件:`config.properties`，如下
+```yml
+book.name=bookName
+anotherfile.configinject=placeholder
+```
+2. 第二个配置文件:`config_placeholder.properties`，如下
+```yml
+book.name.placeholder=bookNamePlaceholder
+```
+3. 代码部分
+```java
+@Component
+// 引入外部配置文件组：${app.configinject}的值来自config.properties。
+// 如果相同，这里使用了配置文件的属性
+@PropertySource({"classpath:com/hry/spring/configinject/config.properties",
+    "classpath:com/hry/spring/configinject/config_${anotherfile.configinject}.properties"})
+public class ConfigurationFileInject{
+    @Value("${app.name}")
+    private String appName; // 这里的值来自application.properties，spring boot启动时默认加载此文件
+
+    @Value("${book.name}")
+    private String bookName; // 注入第一个配置外部文件属性
+
+    @Value("${book.name.placeholder}")
+    private String bookNamePlaceholder; // 注入第二个配置外部文件属性
+
+    @Autowired
+    private Environment env;  // 注入环境变量对象，存储注入的属性值
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("bookName=").append(bookName).append("\r\n")
+        .append("bookNamePlaceholder=").append(bookNamePlaceholder).append("\r\n")
+        .append("appName=").append(appName).append("\r\n")
+        .append("env=").append(env).append("\r\n")
+        // 从eniroment中获取属性值
+        .append("env=").append(env.getProperty("book.name.placeholder")).append("\r\n");
+        return sb.toString();
+    }   
+}
+```
+
+# 18. 参考
 1. <a href = "https://www.jianshu.com/p/3fbfbb843b63">Spring中@Component与@Bean的区别</a>
-2. <a href = "https://www.jianshu.com/p/2ad7969fdcb8">Springboot中@Autowired的原理解析</a>
-3. <a href = "https://www.jianshu.com/p/9d18039c0f08">SpringBoot定时任务@EnableScheduling</a>
-4. <a href = "https://blog.csdn.net/qq_41899174/article/details/89857259">spring的定时任务，超级简单好用</a>
-5. <a href = "https://blog.csdn.net/qq_34845394/article/details/86351317?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task">两种定时器的实现</a>
-6. <a href = "https://www.cnblogs.com/xd502djj/p/10940627.html">透彻的掌握 Spring 中@transactional 的使用</a>
-7. <a href = "https://blog.csdn.net/ysl19910806/article/details/91646554">@Profile注解详解</a>
-8. <a href = "https://www.jianshu.com/p/75de79fba705">Spring @Profile 注解介绍</a>
+2. <a href = "https://blog.csdn.net/qq_26125865/article/details/82881481">四种元注释</a>
+3. <a href = "https://www.jianshu.com/p/2ad7969fdcb8">Springboot中@Autowired的原理解析</a>
+4. <a href = "https://www.jianshu.com/p/9d18039c0f08">SpringBoot定时任务@EnableScheduling</a>
+5. <a href = "https://blog.csdn.net/qq_41899174/article/details/89857259">spring的定时任务，超级简单好用</a>
+6. <a href = "https://blog.csdn.net/qq_34845394/article/details/86351317?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task">两种定时器的实现</a>
+7. <a href = "https://www.cnblogs.com/xd502djj/p/10940627.html">透彻的掌握 Spring 中@transactional 的使用</a>
+8. <a href = "https://blog.csdn.net/ysl19910806/article/details/91646554">@Profile注解详解</a>
+9. <a href = "https://www.jianshu.com/p/75de79fba705">Spring @Profile 注解介绍</a>
+10. <a href = "https://blog.csdn.net/yusimiao/article/details/97622666">@ConfigurationProperties 注解使用姿势，这一篇就够了</a>
+11. <a href = "https://blog.csdn.net/hry2015/article/details/72353994">Spring Boot系列四 Spring @Value 属性注入使用总结一</a>
