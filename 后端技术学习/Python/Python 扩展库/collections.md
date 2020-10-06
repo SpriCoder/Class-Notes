@@ -4,7 +4,11 @@ collections
 <!-- TOC -->
 
 - [1. namedtuple](#1-namedtuple)
-- [2. 统计字符个数](#2-统计字符个数)
+- [2. Counter](#2-counter)
+  - [2.1. 对统计对象进行统计](#21-对统计对象进行统计)
+  - [2.2. 显示最多n个元素](#22-显示最多n个元素)
+  - [2.3. 从计数结果中删除元素](#23-从计数结果中删除元素)
+  - [2.4. 从计数结果中添加元素](#24-从计数结果中添加元素)
 - [3. UserList](#3-userlist)
 - [4. deque()](#4-deque)
 - [5. ChainMap](#5-chainmap)
@@ -28,21 +32,46 @@ Animal = namedtuple('Animal','name age type')
 perry = Animal(name = 'perry', age = 31, type = 'cat')
 ```
 
-# 2. 统计字符个数
+# 2. Counter
+- 不支持对unhashable的对象的统计
+
+## 2.1. 对统计对象进行统计
 ```py
-from collections import Counter
-c = Counter()
-for ch in 'programming':
-    c[ch] = c[ch] + 1
-c
-#Counter({'g': 2, 'm': 2, 'r': 2, 'a': 1, 'i': 1, 'o': 1, 'n': 1, 'p': 1})
+from collections
+c = Counter("helloworld")
+print(c)
+# Counter({'l': 3,'o': 2, 'h': 1, 'e': 1, 'w': 1 , 'r': 1, 'd': 1})
 ```
-1. 更加便捷的方式:
+
+## 2.2. 显示最多n个元素
 ```py
-from collections import Counter
-a = [1, 2, 3, 1, 1, 2]
-result = Counter(a)
-print result
+from collections
+c = Counter("helloworld")
+print(c.most_common(3))
+# [{('l': 3), ('o', 2), ('h', 1)}]
+```
+
+## 2.3. 从计数结果中删除元素
+```py
+import collections
+c = collections.Counter(["123", "234", "345"])
+print(list(c.elements))
+# ["123", "234", "345"]
+
+c.subtract(["234", "345"])
+print(list(c.elements))
+# ["123"]
+```
+## 2.4. 从计数结果中添加元素
+```py
+import collections
+c = collections.Counter(["123", "234", "345"])
+print(list(c.elements))
+# ["123", "234", "345"]
+
+c.update(["234", "345"])
+print(list(c.elements))
+# ["123", "234", "234", "345", "345"]
 ```
 
 # 3. UserList
@@ -55,23 +84,23 @@ print result
 6. 如果一个分离的类不希望依照这个需求，所有的特殊方法就必须重写；请参照源代码进行修改。
 
 # 4. deque()
-方法|功能|备注
---|--|--
-append(x)|添加x到右端|-
-appendleft(x)|添加x到左端|-
-clear()|清空|-
-copy()|浅拷贝|-
-count(x)|统计其中x的出现次数|-
-extend(iterable)|右侧添加iterable对象中元素|-
-extendleft(iterable)|左侧添加iterable对象中的元素|-
-index()|查找对应元素第一次出现的index|-
-insert()|插入|-
-pop()|从右边弹出|-
-popleft()|从左边弹出|-
-remove(value)|移除对应value|-
-reverse()|反转当前队列|-
-rotate()|正数向右循环，负数向左循环|-
-maxlen()|deque的最大长度|未设置为None
+| 方法                 | 功能                          | 备注         |
+| -------------------- | ----------------------------- | ------------ |
+| append(x)            | 添加x到右端                   | -            |
+| appendleft(x)        | 添加x到左端                   | -            |
+| clear()              | 清空                          | -            |
+| copy()               | 浅拷贝                        | -            |
+| count(x)             | 统计其中x的出现次数           | -            |
+| extend(iterable)     | 右侧添加iterable对象中元素    | -            |
+| extendleft(iterable) | 左侧添加iterable对象中的元素  | -            |
+| index()              | 查找对应元素第一次出现的index | -            |
+| insert()             | 插入                          | -            |
+| pop()                | 从右边弹出                    | -            |
+| popleft()            | 从左边弹出                    | -            |
+| remove(value)        | 移除对应value                 | -            |
+| reverse()            | 反转当前队列                  | -            |
+| rotate()             | 正数向右循环，负数向左循环    | -            |
+| maxlen()             | deque的最大长度               | 未设置为None |
 
 # 5. ChainMap
 1. 是一种将多级字典链接起来，进行统一访问的数据结构
