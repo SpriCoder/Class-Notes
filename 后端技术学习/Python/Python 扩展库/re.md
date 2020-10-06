@@ -4,7 +4,7 @@ re
 
 <!-- TOC -->
 
-- [1. 一些方法](#1-一些方法)
+- [1. re模块的方法](#1-re模块的方法)
   - [1.1. search(pattern,string,flags=0)](#11-searchpatternstringflags0)
   - [1.2. match(pattern,string,flags=0)](#12-matchpatternstringflags0)
   - [1.3. findall(pattern,string,flags=0)](#13-findallpatternstringflags0)
@@ -16,11 +16,16 @@ re
 - [3. 注意](#3-注意)
   - [3.1. findall的优先级查询](#31-findall的优先级查询)
   - [3.2. split的优先级查询](#32-split的优先级查询)
-- [4. 参考](#4-参考)
+- [4. 正则表达式的使用实例](#4-正则表达式的使用实例)
+  - [4.1. 删除除字母和数字之外的所有字符](#41-删除除字母和数字之外的所有字符)
+    - [使用`re.sub()`函数](#使用resub函数)
+    - [使用isalpha、isnumberic和join方法](#使用isalphaisnumberic和join方法)
+    - [使用isalnum和join方法](#使用isalnum和join方法)
+- [5. 参考](#5-参考)
 
 <!-- /TOC -->
 
-# 1. 一些方法
+# 1. re模块的方法
 ```py
 import re
 ret = re.findall('a', 'eva egon yuan')  # 返回所有满足匹配条件的结果,放在列表里
@@ -142,7 +147,6 @@ def password_level(password):
                 print 'password level is strong',level_strong.group()
 ```
 
-
 # 3. 注意
 
 ## 3.1. findall的优先级查询
@@ -164,6 +168,49 @@ print(ret) #结果 ： ['eva', '3', 'egon', '4', 'yuan']
 #这个在某些需要保留匹配部分的使用过程是非常重要的。
 ```
 
-# 4. 参考
+# 4. 正则表达式的使用实例
+
+## 4.1. 删除除字母和数字之外的所有字符
+
+### 使用`re.sub()`函数
+```py
+import re
+
+string = "123vbsgwe@#$%#@$%#$"
+print("初始化字符串:", string)
+# 123vbsgwe@#$%#@$%#$
+result = re.sub("[\W_]+", "", string)
+print("替换后的字符串:", result)
+# 123vbsgwe
+```
+
+### 使用isalpha、isnumberic和join方法
+```py
+string = "123vbsgwe@#$%#@$%#$"
+print("初始化字符串:", string)
+# 123vbsgwe@#$%#@$%#$
+
+result = "".join(list([char for char in string
+                if char.isalpha() of char.isnumberic()]))
+
+print("替换后的字符串:", result)
+# 123vbsgwe
+```
+
+### 使用isalnum和join方法
+```py
+string = "123vbsgwe@#$%#@$%#$"
+print("初始化字符串:", string)
+# 123vbsgwe@#$%#@$%#$
+
+result = "".join(list([char for char in string
+                if char.isalnum()]))
+
+print("替换后的字符串:", result)
+# 123vbsgwe
+```
+
+# 5. 参考
 1. <a herf = "https://www.cnblogs.com/yaogua/p/7205401.html">python使用正则表达式判断密码强弱</a>
 2. <a href = "https://www.cnblogs.com/python-xkj/archive/2018/06/26/9231624.html">python re库入门</a>
+3. <a href = "https://blog.csdn.net/flower_517/article/details/88709337">Python入门教程-如何删除除字母和数字之外的所有字符</a>

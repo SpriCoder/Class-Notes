@@ -1,7 +1,7 @@
 Java 语法糖
 ---
 
-# Java判断字符串你是否全为汉字
+# 1. Java判断字符串你是否全为汉字
 ```java
 String str1 = "java判断是否quan为汉字"  
 String str2 = "全为汉字"  
