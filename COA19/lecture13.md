@@ -125,7 +125,7 @@ Bus
 4. 优先级和公平性本来就是矛盾的，没有好坏之分。
 5. 总线上:必须要等总线空闲的时候看优先级来完成。
 
-## 4.1. Arbitration Type(总裁类型)
+## 4.1. Arbitration Type(仲裁类型)
 1. Centralized scheme(集中式): a single hardware device, referred to as a bus controller or arbiter, is responsible for allocating time on the bus(一个简单的作为**总线控制器**或者**仲裁器**的硬件设备，它负责为总线各个设备分配使用时间)
     + Daisy chain(链式)
     + Query by a counter(计数器查询法)
@@ -156,7 +156,7 @@ Bus
 ## 5.2. Query By A Counter(计数器查询法)
 1. Remove bus grant line, and use devices ID lines(移除了许可总线，使用装置ID线)
 2. If the bus is not busy, the bus arbiter sends the count through device ID lines(如果总线不忙，则总线仲裁器通过装置ID线发送计数)
-3. If one device requests the bus whose ID equals to the current count, the arbiters stops counting and the device sets the bus busy(如果一个设备需要总线，并且ID和当前的技术相同，则仲裁器终止技术并且设备设置总线为忙。)
+3. If one device requests the bus whose ID equals to the current count, the arbiters stops counting and the device sets the bus busy(如果一个设备需要总线，并且ID和当前的技术相同，则仲裁器终止计数并且设备设置总线为忙。)
 4. 通过不同报数规则保证公平性等。
 
 ![](img/cpt13/5.png)
@@ -364,7 +364,7 @@ increase the duration of each bus transaction and system complexity(增加了系
     1. Bus transaction: address + 4 words data
         + Address transfer: 1 cycle
         + Data read: 200ns (40 cycles)
-        + Data transfer: 2 cycles(读出和读入各1个周期)
+        + Data transfer: 2 cycles
         + Idle: 2 clock cycles
     2. Total: (256 / 4) * (1 + 40 + 2 + 2) = 2880 cycles
     3. Transfer time = 2880 * 5 = 14400ns
