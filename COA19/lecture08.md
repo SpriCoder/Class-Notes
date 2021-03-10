@@ -80,8 +80,8 @@
 1. 因为Principle of Locality(局部性原理)
 2. locality of reference，**就是在程序执行的过程中，处理器更倾向于成簇(块)地访问存储器中的指令和数据**。a phenomenon describing the same value, or related storage locations, being frequently accessed (Wikipedia)
 3. Types
-    1. **Temporal locality(时间的局部性)**: the reuse of specific data, and/or resources, within a relatively small time duration(在相对较短的时间内重用特定的数据或资源)
-    2. **Spatial locality(空间的局部性)**: the use of data elements within relatively close storage locations(在相对较短的空间内重读使用特定数据或者资源)
+    1. **Temporal locality(时间的局部性)**: the reuse of specific data, and/or resources, within a relatively small time duration(在相对较短的时间内连续的使用特定的数据或资源)
+    2. **Spatial locality(空间的局部性)**: the use of data elements within relatively close storage locations(在相对较短的空间内连续的使用使用特定数据或者资源)
         + **Sequential locality**: a special case of spatial locality, occurs when data elements are arranged and accessed linearly, such as, traversing the elements in a one-dimensional array(空间局部性的一种特殊情况是，当数据元素以线性方式排列和访问时，例如遍历一维数组中的元素)
 5. 一般是按照顺序进行存储，我们按照序列来存储。在时间上和空间上是附近稳定的。
 
@@ -100,7 +100,7 @@
 ---
 ![](img/cpt8/cpt8-5.png)
 
-1. 按照块来进行表示，在Cache中用Tag记录每一个块的快号，而并不是具体的地址。
+1. 按照块来进行表示，在Cache中用Tag记录每一个块的块号，而并不是具体的地址。
 
 
 ### 1.3.3. 为什么cache能节省时间?
@@ -160,38 +160,32 @@
 2. 主存中:字长，每一块(K字)
 
 ### 2.3.2. Direct Mapping(直接映射)
-1. Map each block of main memory into **only one possible** cache line
-    + 前几个块放在一行。
-    + 之后几个块放在一行。
-    + 之后往下循环下去到底。
+1. Map each block of main memory into **only one possible** cache line：内存中的一个块对应cache的一行，每行按顺序对应一块，行用完后再从第一行开始向后重新使用，由此可以取模来判断所在的cache行，比如一共16块，有4行，那么0,4,8,12对应0行，1,5,9,13对应第1行，以此类推。
 2. Assume 𝑖 is cache line number, 𝑗 is main memory block number, 𝐶 is number of lines in cache 𝑖 = 𝑗 𝑚𝑜𝑑 𝐶
     + 这个策略保证每一行的附近都是均衡的
     + 性能会比上一个好
-3. 为什么第二个方法会比第一个方法好?
-    + 因为第一个很有可能造成反复Miss:比如在两个块的边缘
-    + 保证相邻的块可以被同时载入Cache中。
 
 ![](img/cpt8/cpt8-8.png)
 ![](img/cpt8/cpt8-12.png)
 
-4. Tag:标记，是主存储器地址中的一个。
+3. Tag:标记，是主存储器地址中的一个。
     + Highest 𝑛 bits in address, 𝑛 = 𝑙𝑜𝑔<sub>2</sub>𝑀 − 𝑙𝑜𝑔<sub>2</sub>𝐶
     + ![](img/cpt8/cpt8-9.png)
     + 为了成本，要用尽可能少的位置存储tag
     + 常见的形式:前面表示块号，后面表示块内地址(4个2位，2个1位)
-5. 块越大，块内地址位数越多，块号地址越少，块越少。
+4. 块越大，块内地址位数越多，块号地址越少，块越少。
     + 因为块号和块内地址的二进制长度一定
     + 那么 i = j mod c ,比如 c = 16，**块号的最后四位就决定了它的行(而这是不需要存的)**。根据块号的最后四位来寻找哪些行，我们只要比对块号其余部分中的 tag 和 Cache 中即可，如果相同，则Hit，如果不同，我们根据块号到 Main memory 中寻找到相应的块，将其加载到 Cache 中，然后覆盖新的tag。
     + 取模决定哪一行(相当于分离出来line这些列)
-6.  Example
-    + Assume cache has 4 lines, each line contains 8 words, and main memory contains 128 words. To access main memory, the length of address is 7 bits. The lowest 3 bits determines which word in the block, the middle 2 bits determines which line is possible, and the highest 2 bits determines which block occupies the cache 假设cache有4行，每行有8个字，主存有128个字。为了访问内存，至少需要7位地址，第三位决定块内地址，中间两位确定cache中对应映射的行，最高位是Tag(标记位)
-7. 好处:
+5.  Example
+    + Assume cache has 4 lines, each line contains 8 words, and main memory contains 128 words. To access main memory, the length of address is 7 bits. The lowest 3 bits determines which word in the block, the middle 2 bits determines which line is possible, and the highest 2 bits determines which block occupies the cache 假设cache有4行，每行有8个字，主存有128个字。为了访问内存，至少需要7位地址，低三位决定块内地址，中间两位确定cache中对应映射的行，最高位是Tag(标记位)
+6. 好处:
     1. 比较方便查找
     2. 很快的查找，check。
-8. 缺点:
-    1. 两个块被重复使用的话有可能出现**抖动**的现象。(命中率低)
-9. 比较适合大容量的cache
-10. 直接映射在cache中只能对应一行，而不能对应多个。
+7. 缺点:
+    1. 对应同一cache行的两个块被重复使用的话有可能出现**抖动**的现象。(命中率低)
+10. 比较适合大容量的cache
+11. 直接映射在cache中只能对应一行，而不能对应多个。
 
 ## 2.4. 全关联映射
 1. 直接映射就是固定一行，那么关联映射是主存中的可以放置在cache中的任意一行。
@@ -260,7 +254,7 @@
 
 ### 2.6.1. 特点
 1. 关联性越小，命中率越低。 The lower correlation is, the lower hit rate is
-    + Direct mapping is the lowest in hit rate, and the associative mapping is the highest(直接映射的命中率是最低的，组相联映射的命中率是最高的)
+    + Direct mapping is the lowest in hit rate, and the associative mapping is the highest(直接映射的命中率是最低的，全相联映射的命中率是最高的)
 2. 关联性越小，check时间越少。The lower correlation is, the quicker checking is
     + Direct mapping has the least check time, and associative has the most check time(直接映射的检查耗时最短，全相联映射的检查耗时最长)
 3. 关联性越低，tag越短，The lower correlation is, the shorter tag is
