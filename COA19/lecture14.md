@@ -411,7 +411,6 @@ require one more memory reference(需要多一个内存引用)
 1. Mode: The referenced register contains a main memory address, and the address field contains a displacement from that address. The register reference may be explicit or implicit(引用的寄存器包含一个主存地址，地址字段包含该地址的位移。寄存器引用可以是显式的或隐式的)
 2. Algorithm: EA = (B) + A
 3. Usage: program relocation in virtual memory space(程序在虚拟地址中再分配地址)
-4. 我写相对开头的位置的偏移量是多少。
 
 ### 6.8.3. Indexing(间址寻址)
 1. Mode: The address field references a main memory address, and the referenced register contains a positive displacement from that address(地址字段引用主存储器地址，引用的寄存器包含该地址的正位移)
@@ -468,7 +467,7 @@ require one more memory reference(需要多一个内存引用)
 ## 8.3. Variable-Length Instructions(可变长操作数)
 ![](img/cpt14/1.jpg)
 
-1. 可边长操作码:使得指令一般会相对更加短(如上图)
+1. 可变长操作码:使得指令一般会相对更加短(如上图)
     + 问题:存在二义性，如果确定到底是op+A还是op
     + 解决问题:对于底下两个可边长的操作码，显然最低下的op的前几位不能和倒数第二个操作码的op没有交集，才能保证无**二义性**。
 2. 可边长指令:指令的长度的不确定
