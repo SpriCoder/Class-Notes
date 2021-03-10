@@ -175,7 +175,7 @@
 2. Read-only memory
 3. Characteristics
     + Nonvolatile(非易失性): no power source is required to maintain the bit(不需要提供电来保持数据的位)
-    + Possible to read a ROM but not possible to write new data(POM可以被读出但是不可以被写入)
+    + Possible to read a ROM but not possible to write new data(ROM可以被读出但是不可以被写入)
 4. Applications
     + Microprogramming, library subroutines, system programs, function tables(微程序设计，库子程序，系统程序，功能表)
 5. Problems
