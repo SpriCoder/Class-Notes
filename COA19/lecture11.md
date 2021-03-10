@@ -159,7 +159,7 @@ p = b0 ⨁ 𝑏1 ⨁ 𝑏2 ⨁ 𝑏3
 
 ![](img/cpt11/7.png)
 
-1. Use of an independent access technique(使用并行访问机器)
+1. Use of an independent access technique(使用独立访问技术)
     + Each member disk operates independently, so that separate I/O requests can be satisfied in parallel(每个成员磁盘独立运行，因此可以并行地满足单独的I/O请求)
 2. Data striping is used(数据条带化存储,**条带变大**)
 3. A bit-by-bit parity strip is calculated across corresponding strips on each data disk, and the parity bits are stored in the corresponding strip on the parity disk(在每个数据盘上的对应条带上计算逐位奇偶校验条，奇偶校验位存储在奇偶校验盘上的对应条带上)
@@ -186,7 +186,7 @@ p = b0 ⨁ 𝑏1 ⨁ 𝑏2 ⨁ 𝑏3
 
 1. Similar to RAID level 4
 2. Distributes the parity strips across all disks(将奇偶校验位条分布到所有磁盘上)
-    + Avoid the potential I/O bottleneck(不免可能的I/O瓶颈)
+    + Avoid the potential I/O bottleneck(避免可能的I/O瓶颈)
 3. 目前使用的比较多的是RAID 5和RAID 1
 4. 假设在Block0写入，会影响到4行/列(第一行、最后一行、第一列、最后一列)
 5. 将校验盘这个物理盘放到所有盘中(虚拟盘)
