@@ -160,7 +160,7 @@ private void rehash(){
 ## 1.4. 散列表的实现
 1. Assume that each element to be stored in the hash table is of type E and has a field key of type k.(我们假设存储在散列表中的每一元素的类型是E，并且有一个类型为k的关键码)
 2. the hash table is implemented using two arrays: ht and empty.(散列表的实现使用了两个数组，一个是ht，另一个是empty)
-3. empty[i] is true iff ht[i] does not have an element in it. It is defined for the deletion operation(ht[t]中含有关键码当且仅当empty[i]是true。)
+3. empty[i] is true iff ht[i] does not have an element in it. It is defined for the deletion operation(当且仅当h[t]不包含其中的一个元素时,empty[i]为true。这定义了删除操作)
 
 ### 1.4.1. 散列表的c++实现
 ```c++
