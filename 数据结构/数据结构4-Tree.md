@@ -507,8 +507,6 @@ BinaryNode<Type>*void CreateBT (String pres, ins) {
     + 双亲表示法；记下自己的父结点位置，问题是:找子节点需要遍历一遍。
     + 左子女—右兄弟表示法
 
-!(img/cpt5/4.png)
-
 ```c++
 //左子女——右兄弟表示法
 class TreeNode:
